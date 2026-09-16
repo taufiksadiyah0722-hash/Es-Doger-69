@@ -60,6 +60,14 @@
             border-color: #ffb6c1;
             border-radius: 8px;
         }
+        .total-box {
+            background-color: #fff0f5;
+            border: 2px dashed #ff69b4;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -103,7 +111,7 @@
                             <!-- Varian 1: Mini -->
                             <div class="product-box">
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" value="Mini 5K" id="checkMini" onchange="toggleProduct('Mini')">
+                                    <input class="form-check-input" type="checkbox" value="Mini 5K" id="checkMini" onchange="hitungTotal(); toggleProduct('Mini')">
                                     <label class="form-check-label fw-bold" for="checkMini" style="color: #c71585;">
                                         Mini - Rp 5.000 <span class="small fw-normal text-muted">(Cup 10 oz: Toping Es Doger, mutiara, tape, Roti)</span>
                                     </label>
@@ -111,7 +119,7 @@
                                 <div id="optMini" class="row g-2 d-none mt-2">
                                     <div class="col-6">
                                         <label class="small text-muted">Jumlah Porsi</label>
-                                        <input type="number" class="form-control form-control-sm" id="jmlMini" min="1" value="1">
+                                        <input type="number" class="form-control form-control-sm" id="jmlMini" min="1" value="1" oninput="hitungTotal()">
                                     </div>
                                     <div class="col-6">
                                         <label class="small text-muted">Pilihan Susu</label>
@@ -126,7 +134,7 @@
                             <!-- Varian 2: Standar -->
                             <div class="product-box">
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" value="Standar 8K" id="checkStandar" onchange="toggleProduct('Standar')">
+                                    <input class="form-check-input" type="checkbox" value="Standar 8K" id="checkStandar" onchange="hitungTotal(); toggleProduct('Standar')">
                                     <label class="form-check-label fw-bold" for="checkStandar" style="color: #c71585;">
                                         Standar - Rp 8.000 <span class="small fw-normal text-muted">(Cup 14 oz: Toping Es Doger, mutiara, tape, roti, ketan hitam, jelly)</span>
                                     </label>
@@ -134,7 +142,7 @@
                                 <div id="optStandar" class="row g-2 d-none mt-2">
                                     <div class="col-6">
                                         <label class="small text-muted">Jumlah Porsi</label>
-                                        <input type="number" class="form-control form-control-sm" id="jmlStandar" min="1" value="1">
+                                        <input type="number" class="form-control form-control-sm" id="jmlStandar" min="1" value="1" oninput="hitungTotal()">
                                     </div>
                                     <div class="col-6">
                                         <label class="small text-muted">Pilihan Susu</label>
@@ -149,7 +157,7 @@
                             <!-- Varian 3: Spesial 69 -->
                             <div class="product-box">
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" value="Spesial 69 12K" id="checkSpesial" onchange="toggleProduct('Spesial')">
+                                    <input class="form-check-input" type="checkbox" value="Spesial 69 12K" id="checkSpesial" onchange="hitungTotal(); toggleProduct('Spesial')">
                                     <label class="form-check-label fw-bold" for="checkSpesial" style="color: #c71585;">
                                         Spesial 69 - Rp 12.000 <span class="small fw-normal text-muted">(Cup 16 oz: Toping Es Doger, mutiara, tape, roti, ketan hitam, extra jelly, keju)</span>
                                     </label>
@@ -157,7 +165,7 @@
                                 <div id="optSpesial" class="row g-2 d-none mt-2">
                                     <div class="col-6">
                                         <label class="small text-muted">Jumlah Porsi</label>
-                                        <input type="number" class="form-control form-control-sm" id="jmlSpesial" min="1" value="1">
+                                        <input type="number" class="form-control form-control-sm" id="jmlSpesial" min="1" value="1" oninput="hitungTotal()">
                                     </div>
                                     <div class="col-6">
                                         <label class="small text-muted">Pilihan Susu</label>
@@ -190,6 +198,12 @@
                             <textarea class="form-control" id="alamat" rows="2" placeholder="Nama jalan, nomor rumah, RT/RW, patokan..."></textarea>
                         </div>
 
+                        <!-- Kotak Total Pembayaran -->
+                        <div class="total-box">
+                            <span class="text-muted small d-block">Total Nominal Pembelian:</span>
+                            <h3 class="fw-bold mb-0" id="displayTotal" style="color: #d81b60;">Rp 0</h3>
+                        </div>
+
                         <!-- Jenis Pembayaran -->
                         <div class="mb-4">
                             <label for="pembayaran" class="form-label">Jenis Pembayaran</label>
@@ -203,15 +217,17 @@
                             <!-- Info QRIS (Muncul jika QRIS dipilih) -->
                             <div id="qrisInfo" class="alert alert-info alert-custom mt-2 p-2 d-none" role="alert">
                                 📱 Silakan scan/lihat foto QRIS berikut: <br>
-                                <a href="https://drive.google.com/file/d/1nqZYGiBAkwzGVIB4KnstX1F3h7N0vhIy/view?usp=drivesdk" target="_blank" class="fw-bold text-decoration-underline">Buka Foto QRIS di Google Drive</a>
+                                <a href="https://drive.google.com/file/d/1nqZYGiBAkwzGVIB4KnstX1F3h7N0vhIy/view?usp=drivesdk" target="_blank" class="fw-bold text-decoration-underline">Buka Foto QRIS di Google Drive</a><br>
+                                <span class="small fst-italic text-dark mt-1 d-block">⚠️ Silakan kirimkan bukti transfer/pembayaran melalui WhatsApp.</span>
                             </div>
 
                             <!-- Info Transfer (Muncul jika Transfer dipilih) -->
                             <div id="transferInfo" class="alert alert-secondary alert-custom mt-2 p-2 d-none" role="alert" style="background-color: #f8f9fa; border-color: #ccc; color: #333;">
-                                🏦 <b>Silakan transfer ke rekening berikut:</b><br>
+                                🏦 <b>Silakan transfer ke rekening berikut (Atas Nama Taufik):</b><br>
                                 • Mandiri: <b>1440019602025</b><br>
                                 • BCA: <b>0332616992</b><br>
-                                • BTN: <b>0004601500456397</b>
+                                • BTN: <b>0004601500456397</b><br>
+                                <span class="small fst-italic text-dark mt-1 d-block">⚠️ Silakan kirimkan bukti transfer melalui WhatsApp.</span>
                             </div>
                         </div>
 
@@ -241,6 +257,30 @@
             } else {
                 optBox.classList.add('d-none');
             }
+        }
+
+        function hitungTotal() {
+            let total = 0;
+
+            let isMiniChecked = document.getElementById('checkMini').checked;
+            if (isMiniChecked) {
+                let jml = parseInt(document.getElementById('jmlMini').value) || 0;
+                total += jml * 5000;
+            }
+
+            let isStandarChecked = document.getElementById('checkStandar').checked;
+            if (isStandarChecked) {
+                let jml = parseInt(document.getElementById('jmlStandar').value) || 0;
+                total += jml * 8000;
+            }
+
+            let isSpesialChecked = document.getElementById('checkSpesial').checked;
+            if (isSpesialChecked) {
+                let jml = parseInt(document.getElementById('jmlSpesial').value) || 0;
+                total += jml * 12000;
+            }
+
+            document.getElementById('displayTotal').innerText = "Rp " + total.toLocaleString('id-ID');
         }
 
         function checkDeliveryNote() {
@@ -288,6 +328,8 @@
             let pembayaran = document.getElementById('pembayaran').value;
 
             let pesananList = [];
+            let totalNominal = 0;
+
             let isMiniChecked = document.getElementById('checkMini').checked;
             let isStandarChecked = document.getElementById('checkStandar').checked;
             let isSpesialChecked = document.getElementById('checkSpesial').checked;
@@ -298,19 +340,25 @@
             }
 
             if (isMiniChecked) {
-                let jml = document.getElementById('jmlMini').value;
+                let jml = parseInt(document.getElementById('jmlMini').value) || 0;
                 let susu = document.getElementById('susuMini').value;
-                pesananList.push(`- Mini (5K): ${jml} porsi (Susu: ${susu})`);
+                let subtotal = jml * 5000;
+                totalNominal += subtotal;
+                pesananList.push(`- Mini: ${jml} porsi (Susu: ${susu}) - Rp ${subtotal.toLocaleString('id-ID')}`);
             }
             if (isStandarChecked) {
-                let jml = document.getElementById('jmlStandar').value;
+                let jml = parseInt(document.getElementById('jmlStandar').value) || 0;
                 let susu = document.getElementById('susuStandar').value;
-                pesananList.push(`- Standar (8K): ${jml} porsi (Susu: ${susu})`);
+                let subtotal = jml * 8000;
+                totalNominal += subtotal;
+                pesananList.push(`- Standar: ${jml} porsi (Susu: ${susu}) - Rp ${subtotal.toLocaleString('id-ID')}`);
             }
             if (isSpesialChecked) {
-                let jml = document.getElementById('jmlSpesial').value;
+                let jml = parseInt(document.getElementById('jmlSpesial').value) || 0;
                 let susu = document.getElementById('susuSpesial').value;
-                pesananList.push(`- Spesial 69 (12K): ${jml} porsi (Susu: ${susu})`);
+                let subtotal = jml * 12000;
+                totalNominal += subtotal;
+                pesananList.push(`- Spesial 69: ${jml} porsi (Susu: ${susu}) - Rp ${subtotal.toLocaleString('id-ID')}`);
             }
 
             let nomorWhatsApp = "6281332101747";
@@ -320,6 +368,8 @@
                         `- Nama: ${nama}\n` +
                         `- Status: ${status}\n` +
                         `Detail Pesanan:\n` + pesananList.join('\n') + `\n` +
+                        `-----------------------------------\n` +
+                        `💰 *Total Pembayaran: Rp ${totalNominal.toLocaleString('id-ID')}*\n` +
                         `-----------------------------------\n` +
                         `- Lokasi: ${lokasi}\n`;
 
