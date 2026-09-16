@@ -187,8 +187,16 @@
                                 <option value="Antar ke rumah">Antar ke rumah</option>
                                 <option value="Ambil di kios kami">Ambil di kios kami</option>
                             </select>
+                            
+                            <!-- Catatan Antar ke Rumah -->
                             <div id="deliveryNote" class="alert alert-warning alert-custom mt-2 p-2 d-none" role="alert">
                                 ℹ️ Catatan: Layanan antar ke rumah minimal transaksi <b>Rp 24.000</b> per lokasi!
+                            </div>
+
+                            <!-- Info Maps Kios (Muncul jika Ambil di kios kami dipilih) -->
+                            <div id="kiosMapInfo" class="alert alert-info alert-custom mt-2 p-2 d-none" role="alert">
+                                📍 Silakan lihat lokasi kios kami di Google Maps: <br>
+                                <a href="https://maps.app.goo.gl/LB8GFfEpB5fkcWH79" target="_blank" class="fw-bold text-decoration-underline">Buka Peta Lokasi Kios</a>
                             </div>
                         </div>
 
@@ -286,15 +294,24 @@
         function checkDeliveryNote() {
             let lokasi = document.getElementById('lokasi').value;
             let note = document.getElementById('deliveryNote');
+            let kiosMapInfo = document.getElementById('kiosMapInfo');
             let alamatContainer = document.getElementById('alamatContainer');
             let alamatInput = document.getElementById('alamat');
 
             if (lokasi === 'Antar ke rumah') {
                 note.classList.remove('d-none');
+                kiosMapInfo.classList.add('d-none');
                 alamatContainer.classList.remove('d-none');
                 alamatInput.setAttribute('required', 'true');
+            } else if (lokasi === 'Ambil di kios kami') {
+                note.classList.add('d-none');
+                kiosMapInfo.classList.remove('d-none');
+                alamatContainer.classList.add('d-none');
+                alamatInput.removeAttribute('required');
+                alamatInput.value = '';
             } else {
                 note.classList.add('d-none');
+                kiosMapInfo.classList.add('d-none');
                 alamatContainer.classList.add('d-none');
                 alamatInput.removeAttribute('required');
                 alamatInput.value = '';
@@ -363,7 +380,7 @@
 
             let nomorWhatsApp = "6281332101747";
 
-            let pesan = `Halo Mas Opik, saya ingin memesan Es Doger:\n` +
+            let pesan = `Halo Kak Mas Opik, saya ingin memesan Es Doger:\n` +
                         `-----------------------------------\n` +
                         `- Nama: ${nama}\n` +
                         `- Status: ${status}\n` +
