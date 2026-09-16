@@ -217,32 +217,31 @@
             let susu = document.getElementById('susu').value;
             let jumlah = document.getElementById('jumlah').value;
             let lokasi = document.getElementById('lokasi').value;
-            let alamat = document.getElementById('alamat').value;
+            let alamat = document.getElementById('alamat').value || '-';
             let pembayaran = document.getElementById('pembayaran').value;
 
-            // Nomor WhatsApp tujuan (6281332101747)[span_4](start_span)[span_4](end_span)
-            let nomorWhatsApp = "6281332101747";[span_5](start_span)[span_5](end_span)
+            let nomorWhatsApp = "6281332101747";
 
-            let pesan = `Halo Mas Opik, saya ingin memesan Es Doger:%0A` +
-                        `-----------------------------------%0A` +
-                        `- Nama: ${nama}%0A` +
-                        `- Status: ${status}%0A` +
-                        `- Varian: ${varian}%0A` +
-                        `- Susu: ${susu}%0A` +
-                        `- Jumlah: ${jumlah} porsi%0A` +
-                        `- Lokasi: ${lokasi}%0A`;
+            let pesan = `Halo Kak Mas Opik, saya ingin memesan Es Doger:\n` +
+                        `-----------------------------------\n` +
+                        `- Nama: ${nama}\n` +
+                        `- Status: ${status}\n` +
+                        `- Varian: ${varian}\n` +
+                        `- Susu: ${susu}\n` +
+                        `- Jumlah: ${jumlah} porsi\n` +
+                        `- Lokasi: ${lokasi}\n`;
 
             if (lokasi === 'Antar ke rumah') {
-                pesan += `- Alamat: ${alamat}%0A`;
+                pesan += `- Alamat: ${alamat}\n`;
             }
 
-            pesan += `- Pembayaran: ${pembayaran}%0A` +
-                     `-----------------------------------%0A` +
+            pesan += `- Pembayaran: ${pembayaran}\n` +
+                     `-----------------------------------\n` +
                      `Mohon segera diproses ya, terima kasih!`;
 
-            let urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${pesan}`;
+            // Menggunakan encodeURIComponent agar aman dibaca browser HP dan langsung membuka WhatsApp
+            let urlWhatsApp = `https://api.whatsapp.com/send?phone=${nomorWhatsApp}&text=` + encodeURIComponent(pesan);
             
-            // Membuka WhatsApp secara langsung
             window.location.href = urlWhatsApp;
         });
     </script>
