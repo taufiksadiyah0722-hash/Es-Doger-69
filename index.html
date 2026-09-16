@@ -105,11 +105,21 @@
                             <select class="form-select" id="varian" required onchange="updateVariantInfo()">
                                 <option value="" selected disabled data-desc="">-- Pilih Varian --</option>
                                 <option value="Mini 5K" data-desc="Cup 10 oz dengan toping Es Doger, mutiara, tape, dan Roti. (Harga: Rp 5.000)">Mini - Rp 5.000</option>
-                                <option value="Standar 8K" data-desc="Cup 14 oz dengan toping Es Doger, mutiara, tape, roti & jelly. (Harga: Rp 8.000)">Standar - Rp 8.000</option>
-                                <option value="Spesial 69 12K" data-desc="Cup 16 oz dengan toping Es Doger, mutiara, tape, roti, extra jelly & keju. (Harga: Rp 12.000)">Spesial 69 - Rp 12.000</option>
+                                <option value="Standar 8K" data-desc="Cup 14 oz dengan toping Es Doger, mutiara, tape, roti, ketan hitam, & jelly. (Harga: Rp 8.000)">Standar - Rp 8.000</option>
+                                <option value="Spesial 69 12K" data-desc="Cup 16 oz dengan toping Es Doger, mutiara, tape, roti, ketan hitam, extra jelly & keju. (Harga: Rp 12.000)">Spesial 69 - Rp 12.000</option>
                             </select>
                             <!-- Keterangan Varian -->
                             <div id="variantInfoBox" class="variant-info-box"></div>
+                        </div>
+
+                        <!-- Pilihan Susu -->
+                        <div class="mb-3">
+                            <label for="susu" class="form-label">Pilihan Susu</label>
+                            <select class="form-select" id="susu" required>
+                                <option value="" selected disabled>-- Pilih Susu --</option>
+                                <option value="Putih / Standar">Putih / Standar</option>
+                                <option value="Coklat">Coklat</option>
+                            </select>
                         </div>
 
                         <!-- Jumlah -->
@@ -130,6 +140,12 @@
                             <div id="deliveryNote" class="alert alert-warning alert-custom mt-2 p-2 d-none" role="alert">
                                 ℹ️ Catatan: Layanan antar ke rumah minimal transaksi <b>Rp 24.000</b> per lokasi!
                             </div>
+                        </div>
+
+                        <!-- Kolom Alamat (Muncul Otomatis jika Antar ke Rumah) -->
+                        <div class="mb-3 d-none" id="alamatContainer">
+                            <label for="alamat" class="form-label">Alamat Lengkap Pengiriman</label>
+                            <textarea class="form-control" id="alamat" rows="2" placeholder="Nama jalan, nomor rumah, RT/RW, patokan..."></textarea>
                         </div>
 
                         <!-- Jenis Pembayaran -->
@@ -177,10 +193,18 @@
         function checkDeliveryNote() {
             let lokasi = document.getElementById('lokasi').value;
             let note = document.getElementById('deliveryNote');
+            let alamatContainer = document.getElementById('alamatContainer');
+            let alamatInput = document.getElementById('alamat');
+
             if (lokasi === 'Antar ke rumah') {
                 note.classList.remove('d-none');
+                alamatContainer.classList.remove('d-none');
+                alamatInput.setAttribute('required', 'true');
             } else {
                 note.classList.add('d-none');
+                alamatContainer.classList.add('d-none');
+                alamatInput.removeAttribute('required');
+                alamatInput.value = '';
             }
         }
 
@@ -190,23 +214,31 @@
             let nama = document.getElementById('nama').value;
             let status = document.getElementById('status').value;
             let varian = document.getElementById('varian').value;
+            let susu = document.getElementById('susu').value;
             let jumlah = document.getElementById('jumlah').value;
             let lokasi = document.getElementById('lokasi').value;
+            let alamat = document.getElementById('alamat').value;
             let pembayaran = document.getElementById('pembayaran').value;
 
-            // Nomor WhatsApp tujuan (Otomatis masuk ke 081332101747)
-            let nomorWhatsApp = "6281332101747";
+            // Nomor WhatsApp tujuan (6281332101747)[span_4](start_span)[span_4](end_span)
+            let nomorWhatsApp = "6281332101747";[span_5](start_span)[span_5](end_span)
 
-            let pesan = `Halo Mas Opik, saya ingin memesan Es Doger:%0A` +
+            let pesan = `Halo Kak Mas Opik, saya ingin memesan Es Doger:%0A` +
                         `-----------------------------------%0A` +
                         `- Nama: ${nama}%0A` +
                         `- Status: ${status}%0A` +
                         `- Varian: ${varian}%0A` +
+                        `- Susu: ${susu}%0A` +
                         `- Jumlah: ${jumlah} porsi%0A` +
-                        `- Lokasi: ${lokasi}%0A` +
-                        `- Pembayaran: ${pembayaran}%0A` +
-                        `-----------------------------------%0A` +
-                        `Mohon segera diproses ya, terima kasih!`;
+                        `- Lokasi: ${lokasi}%0A`;
+
+            if (lokasi === 'Antar ke rumah') {
+                pesan += `- Alamat: ${alamat}%0A`;
+            }
+
+            pesan += `- Pembayaran: ${pembayaran}%0A` +
+                     `-----------------------------------%0A` +
+                     `Mohon segera diproses ya, terima kasih!`;
 
             let urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${pesan}`;
             
