@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -17,7 +17,7 @@
         .header-banner {
             background: linear-gradient(135deg, #ff69b4, #ff1493);
             color: white;
-            padding: 40px 0;
+            padding: 30px 0;
             text-align: center;
             border-bottom-left-radius: 30px;
             border-bottom-right-radius: 30px;
@@ -193,11 +193,26 @@
                         <!-- Jenis Pembayaran -->
                         <div class="mb-4">
                             <label for="pembayaran" class="form-label">Jenis Pembayaran</label>
-                            <select class="form-select" id="pembayaran" required>
+                            <select class="form-select" id="pembayaran" required onchange="checkPaymentMethod()">
                                 <option value="" selected disabled>-- Pilih Pembayaran --</option>
                                 <option value="Tunai">Tunai</option>
                                 <option value="QRIS">QRIS</option>
+                                <option value="Transfer">Transfer</option>
                             </select>
+
+                            <!-- Info QRIS (Muncul jika QRIS dipilih) -->
+                            <div id="qrisInfo" class="alert alert-info alert-custom mt-2 p-2 d-none" role="alert">
+                                📱 Silakan scan/lihat foto QRIS berikut: <br>
+                                <a href="https://drive.google.com/file/d/1nqZYGiBAkwzGVIB4KnstX1F3h7N0vhIy/view?usp=drivesdk" target="_blank" class="fw-bold text-decoration-underline">Buka Foto QRIS di Google Drive</a>
+                            </div>
+
+                            <!-- Info Transfer (Muncul jika Transfer dipilih) -->
+                            <div id="transferInfo" class="alert alert-secondary alert-custom mt-2 p-2 d-none" role="alert" style="background-color: #f8f9fa; border-color: #ccc; color: #333;">
+                                🏦 <b>Silakan transfer ke rekening berikut:</b><br>
+                                • Mandiri: <b>1440019602025</b><br>
+                                • BCA: <b>0332616992</b><br>
+                                • BTN: <b>0004601500456397</b>
+                            </div>
                         </div>
 
                         <!-- Tombol Submit -->
@@ -246,6 +261,23 @@
             }
         }
 
+        function checkPaymentMethod() {
+            let pembayaran = document.getElementById('pembayaran').value;
+            let qrisInfo = document.getElementById('qrisInfo');
+            let transferInfo = document.getElementById('transferInfo');
+
+            if (pembayaran === 'QRIS') {
+                qrisInfo.classList.remove('d-none');
+                transferInfo.classList.add('d-none');
+            } else if (pembayaran === 'Transfer') {
+                transferInfo.classList.remove('d-none');
+                qrisInfo.classList.add('d-none');
+            } else {
+                qrisInfo.classList.add('d-none');
+                transferInfo.classList.add('d-none');
+            }
+        }
+
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -255,7 +287,6 @@
             let alamat = document.getElementById('alamat').value || '-';
             let pembayaran = document.getElementById('pembayaran').value;
 
-            // Cek produk yang dicentang
             let pesananList = [];
             let isMiniChecked = document.getElementById('checkMini').checked;
             let isStandarChecked = document.getElementById('checkStandar').checked;
