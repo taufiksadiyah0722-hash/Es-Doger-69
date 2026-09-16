@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -29,15 +29,12 @@
             box-shadow: 0 8px 20px rgba(255, 105, 180, 0.15);
             background: white;
         }
-        .variant-info-box {
-            background-color: #ffe4e1;
-            border-left: 4px solid #ff69b4;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #8b008b;
-            margin-top: 8px;
-            display: none;
+        .product-box {
+            background-color: #fff8fb;
+            border: 1px solid #ffb6c1;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
         }
         .btn-whatsapp {
             background-color: #25d366;
@@ -99,33 +96,78 @@
                             </select>
                         </div>
 
-                        <!-- Varian -->
+                        <!-- Pilihan Menu & Varian (Bisa Pilih Lebih dari 1) -->
                         <div class="mb-3">
-                            <label for="varian" class="form-label">Varian Es Doger</label>
-                            <select class="form-select" id="varian" required onchange="updateVariantInfo()">
-                                <option value="" selected disabled data-desc="">-- Pilih Varian --</option>
-                                <option value="Mini 5K" data-desc="Cup 10 oz dengan toping Es Doger, mutiara, tape, dan Roti. (Harga: Rp 5.000)">Mini - Rp 5.000</option>
-                                <option value="Standar 8K" data-desc="Cup 14 oz dengan toping Es Doger, mutiara, tape, roti, ketan hitam, & jelly. (Harga: Rp 8.000)">Standar - Rp 8.000</option>
-                                <option value="Spesial 69 12K" data-desc="Cup 16 oz dengan toping Es Doger, mutiara, tape, roti, ketan hitam, extra jelly & keju. (Harga: Rp 12.000)">Spesial 69 - Rp 12.000</option>
-                            </select>
-                            <!-- Keterangan Varian -->
-                            <div id="variantInfoBox" class="variant-info-box"></div>
-                        </div>
+                            <label class="form-label">Pilih Varian Es Doger (Bisa lebih dari 1)</label>
+                            
+                            <!-- Varian 1: Mini -->
+                            <div class="product-box">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="Mini 5K" id="checkMini" onchange="toggleProduct('Mini')">
+                                    <label class="form-check-label fw-bold" for="checkMini" style="color: #c71585;">
+                                        Mini - Rp 5.000 <span class="small fw-normal text-muted">(Cup 10 oz: Toping Es Doger, mutiara, tape, Roti)</span>
+                                    </label>
+                                </div>
+                                <div id="optMini" class="row g-2 d-none mt-2">
+                                    <div class="col-6">
+                                        <label class="small text-muted">Jumlah Porsi</label>
+                                        <input type="number" class="form-control form-control-sm" id="jmlMini" min="1" value="1">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="small text-muted">Pilihan Susu</label>
+                                        <select class="form-select form-select-sm" id="susuMini">
+                                            <option value="Putih / Standar">Putih / Standar</option>
+                                            <option value="Coklat">Coklat</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Pilihan Susu -->
-                        <div class="mb-3">
-                            <label for="susu" class="form-label">Pilihan Susu</label>
-                            <select class="form-select" id="susu" required>
-                                <option value="" selected disabled>-- Pilih Susu --</option>
-                                <option value="Putih / Standar">Putih / Standar</option>
-                                <option value="Coklat">Coklat</option>
-                            </select>
-                        </div>
+                            <!-- Varian 2: Standar -->
+                            <div class="product-box">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="Standar 8K" id="checkStandar" onchange="toggleProduct('Standar')">
+                                    <label class="form-check-label fw-bold" for="checkStandar" style="color: #c71585;">
+                                        Standar - Rp 8.000 <span class="small fw-normal text-muted">(Cup 14 oz: Toping Es Doger, mutiara, tape, roti, ketan hitam, jelly)</span>
+                                    </label>
+                                </div>
+                                <div id="optStandar" class="row g-2 d-none mt-2">
+                                    <div class="col-6">
+                                        <label class="small text-muted">Jumlah Porsi</label>
+                                        <input type="number" class="form-control form-control-sm" id="jmlStandar" min="1" value="1">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="small text-muted">Pilihan Susu</label>
+                                        <select class="form-select form-select-sm" id="susuStandar">
+                                            <option value="Putih / Standar">Putih / Standar</option>
+                                            <option value="Coklat">Coklat</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Jumlah -->
-                        <div class="mb-3">
-                            <label for="jumlah" class="form-label">Jumlah Porsi</label>
-                            <input type="number" class="form-control" id="jumlah" min="1" value="1" required>
+                            <!-- Varian 3: Spesial 69 -->
+                            <div class="product-box">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="Spesial 69 12K" id="checkSpesial" onchange="toggleProduct('Spesial')">
+                                    <label class="form-check-label fw-bold" for="checkSpesial" style="color: #c71585;">
+                                        Spesial 69 - Rp 12.000 <span class="small fw-normal text-muted">(Cup 16 oz: Toping Es Doger, mutiara, tape, roti, ketan hitam, extra jelly, keju)</span>
+                                    </label>
+                                </div>
+                                <div id="optSpesial" class="row g-2 d-none mt-2">
+                                    <div class="col-6">
+                                        <label class="small text-muted">Jumlah Porsi</label>
+                                        <input type="number" class="form-control form-control-sm" id="jmlSpesial" min="1" value="1">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="small text-muted">Pilihan Susu</label>
+                                        <select class="form-select form-select-sm" id="susuSpesial">
+                                            <option value="Putih / Standar">Putih / Standar</option>
+                                            <option value="Coklat">Coklat</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Lokasi Pengambilan -->
@@ -173,20 +215,16 @@
         <p class="mb-0">&copy; 2026 Es Doger 69 Mas Opik. All Rights Reserved.</p>
     </footer>
 
-    <!-- Bootstrap JS & Script WhatsApp Interactive Logic -->
+    <!-- Bootstrap JS & Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function updateVariantInfo() {
-            let select = document.getElementById('varian');
-            let infoBox = document.getElementById('variantInfoBox');
-            let selectedOption = select.options[select.selectedIndex];
-            let desc = selectedOption.getAttribute('data-desc');
-
-            if (desc) {
-                infoBox.innerHTML = "<b>Komposisi:</b> " + desc;
-                infoBox.style.display = "block";
+        function toggleProduct(name) {
+            let checkbox = document.getElementById('check' + name);
+            let optBox = document.getElementById('opt' + name);
+            if (checkbox.checked) {
+                optBox.classList.remove('d-none');
             } else {
-                infoBox.style.display = "none";
+                optBox.classList.add('d-none');
             }
         }
 
@@ -213,22 +251,45 @@
 
             let nama = document.getElementById('nama').value;
             let status = document.getElementById('status').value;
-            let varian = document.getElementById('varian').value;
-            let susu = document.getElementById('susu').value;
-            let jumlah = document.getElementById('jumlah').value;
             let lokasi = document.getElementById('lokasi').value;
             let alamat = document.getElementById('alamat').value || '-';
             let pembayaran = document.getElementById('pembayaran').value;
 
+            // Cek produk yang dicentang
+            let pesananList = [];
+            let isMiniChecked = document.getElementById('checkMini').checked;
+            let isStandarChecked = document.getElementById('checkStandar').checked;
+            let isSpesialChecked = document.getElementById('checkSpesial').checked;
+
+            if (!isMiniChecked && !isStandarChecked && !isSpesialChecked) {
+                alert("Harap pilih minimal 1 varian Es Doger!");
+                return;
+            }
+
+            if (isMiniChecked) {
+                let jml = document.getElementById('jmlMini').value;
+                let susu = document.getElementById('susuMini').value;
+                pesananList.push(`- Mini (5K): ${jml} porsi (Susu: ${susu})`);
+            }
+            if (isStandarChecked) {
+                let jml = document.getElementById('jmlStandar').value;
+                let susu = document.getElementById('susuStandar').value;
+                pesananList.push(`- Standar (8K): ${jml} porsi (Susu: ${susu})`);
+            }
+            if (isSpesialChecked) {
+                let jml = document.getElementById('jmlSpesial').value;
+                let susu = document.getElementById('susuSpesial').value;
+                pesananList.push(`- Spesial 69 (12K): ${jml} porsi (Susu: ${susu})`);
+            }
+
             let nomorWhatsApp = "6281332101747";
 
-            let pesan = `Halo Mas Opik, saya ingin memesan Es Doger:\n` +
+            let pesan = `Halo Kak Mas Opik, saya ingin memesan Es Doger:\n` +
                         `-----------------------------------\n` +
                         `- Nama: ${nama}\n` +
                         `- Status: ${status}\n` +
-                        `- Varian: ${varian}\n` +
-                        `- Susu: ${susu}\n` +
-                        `- Jumlah: ${jumlah} porsi\n` +
+                        `Detail Pesanan:\n` + pesananList.join('\n') + `\n` +
+                        `-----------------------------------\n` +
                         `- Lokasi: ${lokasi}\n`;
 
             if (lokasi === 'Antar ke rumah') {
@@ -239,9 +300,7 @@
                      `-----------------------------------\n` +
                      `Mohon segera diproses ya, terima kasih!`;
 
-            // Menggunakan encodeURIComponent agar aman dibaca browser HP dan langsung membuka WhatsApp
             let urlWhatsApp = `https://api.whatsapp.com/send?phone=${nomorWhatsApp}&text=` + encodeURIComponent(pesan);
-            
             window.location.href = urlWhatsApp;
         });
     </script>
